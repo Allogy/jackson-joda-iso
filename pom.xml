@@ -26,7 +26,7 @@
     </parent>
 
     <name>Jackson Joda ISO Library</name>
-    <groupId>com.allogy.jackson</groupId>
+    <groupId>com.allogy.json</groupId>
     <artifactId>jackson-joda-iso</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>

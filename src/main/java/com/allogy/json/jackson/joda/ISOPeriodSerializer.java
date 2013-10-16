@@ -14,35 +14,31 @@
  * the License.
  */
 
-package com.allogy.jackson.joda;
+package com.allogy.json.jackson.joda;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
-import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormatter;
-import org.joda.time.format.ISODateTimeFormat;
+import com.fasterxml.jackson.databind.ser.std.StdSerializer;
+import org.joda.time.Period;
 
 import java.io.IOException;
 
 /**
- * Serializes {@link DateTime} objects as ISO strings
+ * Serializes {@link Period} objects as ISO strings
  *
  * @author David Venable
  */
-public class ISODateTimeSerializer extends JsonSerializer<DateTime>
+public class ISOPeriodSerializer extends StdSerializer<Period>
 {
-    private final DateTimeFormatter dateTimeFormatter;
-
-    public ISODateTimeSerializer()
+    public ISOPeriodSerializer()
     {
-        dateTimeFormatter = ISODateTimeFormat.dateTime();
+        super(Period.class);
     }
 
     @Override
-    public void serialize(DateTime dateTime, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException, JsonProcessingException
+    public void serialize(Period period, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException, JsonProcessingException
     {
-        jsonGenerator.writeString(dateTimeFormatter.print(dateTime));
+        jsonGenerator.writeString(period.toString());
     }
 }

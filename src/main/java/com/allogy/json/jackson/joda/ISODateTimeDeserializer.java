@@ -14,40 +14,40 @@
  * the License.
  */
 
-package com.allogy.jackson.joda;
+package com.allogy.json.jackson.joda;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
-import org.joda.time.LocalDate;
+import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
 
 import java.io.IOException;
 
 /**
- * Deserializes {@link LocalDate} objects as ISO strings
+ * Deserializes {@link DateTime} objects as ISO strings
  *
  * @author David Venable
  */
-public class ISOLocalDateDeserializer extends JsonDeserializer<LocalDate>
+public class ISODateTimeDeserializer extends JsonDeserializer<DateTime>
 {
-    private final DateTimeFormatter localDateFormatter;
+    private final DateTimeFormatter dateTimeFormatter;
 
-    public ISOLocalDateDeserializer()
+    public ISODateTimeDeserializer()
     {
-        localDateFormatter = ISODateTimeFormat.localDateParser();
+        dateTimeFormatter = ISODateTimeFormat.dateTime().withOffsetParsed();
     }
 
     @Override
-    public LocalDate deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException, JsonProcessingException
+    public DateTime deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException, JsonProcessingException
     {
         String text = jsonParser.getText();
         try
         {
-            return localDateFormatter.parseLocalDate(text);
+            return dateTimeFormatter.parseDateTime(text);
         }
         catch (Throwable throwable)
         {

@@ -14,7 +14,7 @@
  * the License.
  */
 
-package com.allogy.jackson.joda;
+package com.allogy.json.jackson.joda;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;

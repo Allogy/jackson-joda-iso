@@ -14,31 +14,29 @@
  * the License.
  */
 
-package com.allogy.jackson.joda;
+package com.allogy.json.jackson.joda;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.ser.std.StdSerializer;
-import org.joda.time.Period;
+import org.joda.time.LocalDate;
 
 import java.io.IOException;
 
 /**
- * Serializes {@link Period} objects as ISO strings
+ * Deserializes {@link LocalDate} objects as ISO strings
  *
  * @author David Venable
  */
-public class ISOPeriodSerializer extends StdSerializer<Period>
+public class ISOLocalDateSerializer extends JsonSerializer<LocalDate>
 {
-    public ISOPeriodSerializer()
-    {
-        super(Period.class);
-    }
-
     @Override
-    public void serialize(Period period, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException, JsonProcessingException
+    public void serialize(LocalDate localDate, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException, JsonProcessingException
     {
-        jsonGenerator.writeString(period.toString());
+        String isoFormat = localDate.toString();
+        if(isoFormat == null || isoFormat.isEmpty())
+            return;
+        jsonGenerator.writeString(isoFormat);
     }
 }
