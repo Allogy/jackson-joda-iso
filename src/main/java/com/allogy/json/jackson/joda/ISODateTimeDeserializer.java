@@ -22,6 +22,7 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
 
@@ -34,7 +35,8 @@ import java.io.IOException;
  */
 public class ISODateTimeDeserializer extends JsonDeserializer<DateTime>
 {
-    private final DateTimeFormatter dateTimeFormatter;
+    private DateTimeFormatter dateTimeFormatter;
+    private static final String WITHOUTMILLISFORMAT  = "yyyy-MM-dd'T'HH:mm:ssZ";
 
     public ISODateTimeDeserializer()
     {
@@ -44,14 +46,20 @@ public class ISODateTimeDeserializer extends JsonDeserializer<DateTime>
     @Override
     public DateTime deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException, JsonProcessingException
     {
+
         String text = jsonParser.getText();
         try
         {
-            return dateTimeFormatter.parseDateTime(text);
+            return  dateTimeFormatter.parseDateTime(text);
         }
         catch (Throwable throwable)
         {
-            throw new InvalidFormatException(throwable.getMessage(), text, String.class);
+           try{
+               dateTimeFormatter = DateTimeFormat.forPattern(WITHOUTMILLISFORMAT).withOffsetParsed();
+               return dateTimeFormatter.parseDateTime(text);
+           }catch(Throwable throwable2){
+               throw new InvalidFormatException(throwable2.getMessage(), text, String.class);
+           }
         }
     }
 }
